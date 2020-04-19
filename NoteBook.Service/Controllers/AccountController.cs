@@ -23,7 +23,7 @@ namespace NoteBook.Service.Controllers
         private readonly IConfiguration _configuration;
 
         public AccountController(
-              UserManager<IdentityUser> userManager,
+              UserManager<IdentityUser> userManager, 
             SignInManager<IdentityUser> signInManager,
             IConfiguration configuration
             )
