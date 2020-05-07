@@ -2,21 +2,15 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
 using NoteBook.Web.ServiceClient;
 using NoteBook.Web.ViewModels;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace NoteBook.Web.Controllers
 {
     [Authorize]
-    public class NoteController:Controller
+    public class NoteController : Controller
     {
         NoteClient apiClient;
         private readonly IConfiguration configuration;
@@ -27,83 +21,46 @@ namespace NoteBook.Web.Controllers
             apiClient = new NoteClient(new Uri(configuration["BaseApiPath"]));
 
         }
-      
+
         public async Task<IActionResult> Index()
         {
 
-             var notes =await apiClient.GetNotes(HttpContext.Session.GetString("Access_Token"));
-            //using (var client = new HttpClient())
-            //{
-            //    client.BaseAddress = new Uri(configuration["BaseApiPath"]);
-            //    client.DefaultRequestHeaders.Accept.Clear();
-            //    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-            //    // Add the Authorization header with the AccessToken.
-            //    client.DefaultRequestHeaders.Add("Authorization", "Bearer " + HttpContext.Session.GetString("Access_Token"));
-
-            //    // create the URL string.
-            //    string url = string.Format("" + configuration["BaseApiPath"] + "/Note/GetNotes");
-
-            //    var json = JsonConvert.SerializeObject("");
-            //    var stringContent = new StringContent(json, UnicodeEncoding.UTF8, "application/json"); //
-            //    // make the request
-            //    HttpResponseMessage response = await client.GetAsync(url);
-
-            //    // parse the response and return the data.
-            //    string jsonString = await response.Content.ReadAsStringAsync();
-            //    object responseData = JsonConvert.DeserializeObject(jsonString);
-            //    var userName = (dynamic)responseData;
-
-            //}
-
+            var notes = await apiClient.GetNotes(HttpContext.Session.GetString("Access_Token"));
             return View(notes);
         }
-        //public ActionResult Create(int Id)
-        //{
-        //    if (Id > 0)
-        //    {
-        //        var result = this.noteRepository.GetNote(Id);
-        //        if (result != null)
-        //            return View(new NoteViewModel { Id = result.Id, Subject = result.Subject, Description = result.Description, RemindMe = result.RemindMe });
-        //        return View();
-        //    }
-        //    return View();
-        //}
-        //[HttpPost]
-        //public ActionResult Create(NoteViewModel model)
-        //{
-        //    //db.Doctors.Add(doctor);
-        //    //db.SaveChanges();
-        //    if (!ModelState.IsValid)
-        //        return View(model);
+        public async Task<IActionResult> Create(int Id)
+        {
+            if (Id > 0)
+            {
+                var note = await apiClient.GetNote(HttpContext.Session.GetString("Access_Token"), Id);
 
-        //    var note = new Models.Note
-        //    {
-        //        Subject = model.Subject,
-        //        Description = model.Description,
-        //        IsActive = true,
-        //        RemindMe = model.RemindMe,
-        //        CreatedBy = this.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value,
-        //        CreatedOn = DateTime.Today
+                if (note != null)
+                    return View(note);
+                return View();
+            }
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Create(NoteViewModel model)
+        {
+            //db.Doctors.Add(doctor);
+            //db.SaveChanges();
+            if (!ModelState.IsValid)
+                return View(model);
 
-        //    };
-        //    if (model.Id > 0)
-        //    {
-        //        note.Id = model.Id;
-        //        this.noteRepository.Update(note);
-        //    }
-        //    else
-        //        this.noteRepository.Add(note);
+            var note = await apiClient.SaveNote(model, HttpContext.Session.GetString("Access_Token"));
+            if (!note.IsSuccess)
+                ModelState.AddModelError("", "Please try again.");
 
-        //    return RedirectToAction("Index", "Note");
-        //}
-        //[HttpPost]
-        //public bool Delete(int id)
-        //{
-        //    var note = this.noteRepository.Delete(id);
-        //    if (note != null)
-        //        return true;
-        //    return false;
-        //}
+            return RedirectToAction("Index", "Note");
+        }
+        [HttpPost]
+        public async Task<bool> Delete(int id)
+        {
+            var note = await apiClient.DeleteNote(HttpContext.Session.GetString("Access_Token"), new NoteViewModel { Id = id });
+            if (note != null)
+                return true;
+            return false;
+        }
     }
 }

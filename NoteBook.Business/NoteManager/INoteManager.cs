@@ -7,6 +7,7 @@ namespace NoteBook.Business.NoteManager
     {
         Task<Models.Note> GetNote(int Id);
         Task<IEnumerable<Models.Note>> GetNotes();
+        Task<IEnumerable<Models.Note>> GetNotes(string UserId);
         Task<Models.Note> AddNote(Models.Note note);
         Task <Models.Note> UpdateNote(Models.Note note);
         Task<Models.Note> DeleteNote(int Id);

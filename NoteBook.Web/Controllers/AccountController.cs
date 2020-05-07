@@ -1,18 +1,16 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
 using NoteBook.Web.ServiceClient;
 using NoteBook.Web.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace NoteBook.Web.Controllers
@@ -52,11 +50,10 @@ namespace NoteBook.Web.Controllers
                     IList<Claim> claim = identity.Claims.ToList();
                     //var userName = claim[0].Value;
 
-                    var claims = new List<Claim>
-            {
-
-        new Claim("UserName", model.Email)
-    };
+                    var claims = new List<Claim>{
+                                new Claim("UserName", string.Format("{0} {1}",result.Data.FirstName,result.Data.LastName)),
+                                new Claim("UserPic",result.Data.ProfilePic)
+                    };
                     var principal = new ClaimsPrincipal();
                     principal.AddIdentity(new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme));
 
@@ -80,35 +77,9 @@ namespace NoteBook.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-
-                using (var client = new HttpClient())
+                var response = await apiClient.Register(new NoteBook.Models.User
                 {
-                    client.BaseAddress = new Uri(configuration["BaseApiPath"]);
-                //    client.DefaultRequestHeaders.Accept.Clear();
-                 //   client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                    // Add the Authorization header with the AccessToken.
-                   // client.DefaultRequestHeaders.Add("Authorization", "Bearer " + HttpContext.Session.GetString("Access_Token"));
-
-                    // create the URL string.
-                    string url = string.Format("" + configuration["BaseApiPath"] + "/Account/Register");
-
-                    var json = JsonConvert.SerializeObject(model);
-                    var stringContent = new StringContent(json, UnicodeEncoding.UTF8, "application/json"); //
-                    // make the request
-                    HttpResponseMessage response1 = await client.PostAsync(url,stringContent);
-
-                    // parse the response and return the data.
-                    string jsonString = await response1.Content.ReadAsStringAsync();
-                    object responseData = JsonConvert.DeserializeObject(jsonString);
-                    var userName = (dynamic)responseData;
-
-                }
-
-
-                var response =   await apiClient.Register(new NoteBook.Models.User
-                {
-                    Email = model.Email,                 
+                    Email = model.Email,
                     Password = model.Password
                 });
                 if (response.IsSuccess == false)
@@ -119,7 +90,7 @@ namespace NoteBook.Web.Controllers
                     }
                 }
                 else
-                    return RedirectToAction("Login", "Account");
+                    return Content("OK");
 
             }
             return PartialView("_registerUser", model);
@@ -129,6 +100,38 @@ namespace NoteBook.Web.Controllers
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Login", "Account");
+        }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> UserProfile()
+        {
+            var userModel = await apiClient.GetUserDetails(HttpContext.Session.GetString("Access_Token"));
+            return View(userModel);
+        }
+        [HttpPost]
+        public async Task<IActionResult> UserProfile(UserProfileViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                if (model.ProfileImage!=null)
+                {
+                    using (var ms = new MemoryStream())
+                    {
+                        model.ProfileImage.CopyTo(ms);
+                        var fileBytes = ms.ToArray();
+                        model.File = fileBytes;
+                        model.FileName = model.ProfileImage.FileName;
+                        model.ProfileImage = null;
+                        // act on the Base64 data
+                    }
+                }
+
+                var userModel = await apiClient.UpdateUser(model, HttpContext.Session.GetString("Access_Token"));
+                ModelState.Clear();
+                return View(userModel.Data);
+            }
+            return View(model);
         }
     }
 }

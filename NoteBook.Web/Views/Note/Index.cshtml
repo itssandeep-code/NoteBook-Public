@@ -74,14 +74,15 @@
             $.ajax(
             {
                 type: "POST",
-                url: '@Url.Action("Delete", "Note")',
+                    url: '@Url.Action("Delete", "Note")',
+                    async: false,
                 data: {
                     Id: id
                 },
                 error: function (result) {
                     alert("error");
                 },
-                success: function (result) {
+                    success: function (result) {                   
                     if (result == true) {
                         window.location.reload();
                     }

@@ -8,10 +8,10 @@ namespace NoteBook.Business.NoteManager
 {
     public class NoteManager : INoteManager
     {
-        private readonly IRepository<Note> noteRepository;
+        private readonly INoteRepository noteRepository;
         private readonly IMapper mapper;
 
-        public NoteManager(IRepository<Note> noteRepository, IMapper mapper)
+        public NoteManager(INoteRepository noteRepository, IMapper mapper)
         {
             this.noteRepository = noteRepository;
             this.mapper = mapper;
@@ -37,10 +37,15 @@ namespace NoteBook.Business.NoteManager
             Note note = await this.noteRepository.Get(Id);
             return mapper.Map<Models.Note>(note);
         }
-
         public async Task<IEnumerable<Models.Note>> GetNotes()
         {
             var notes = await this.noteRepository.GetAll();
+            return mapper.Map<IEnumerable<Models.Note>>(notes);
+            //return null;
+        }
+        public async Task<IEnumerable<Models.Note>> GetNotes(string UserId)
+        {
+            var notes = await this.noteRepository.GetAll(x=>x.CreatedBy==UserId);
             return mapper.Map<IEnumerable<Models.Note>>(notes);
             //return null;
         }

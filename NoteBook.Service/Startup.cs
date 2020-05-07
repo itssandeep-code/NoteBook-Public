@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using NoteBook.Business.NoteManager;
 using NoteBook.Data;
+using NoteBook.Data.EntityModels;
 using NoteBook.Data.Repository.Contracts;
 using NoteBook.Data.Repository.Implementation;
 using System;
@@ -33,7 +34,7 @@ namespace NoteBook.Service
            
             services.AddAutoMapper(typeof(NoteBook.Business.BusinessMappingFactory));
             services.AddDbContext<NoteBookDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("NoteDbConnection")));
-            services.AddIdentity<IdentityUser, IdentityRole>()
+            services.AddIdentity<ApplicationUser, IdentityRole>()
              .AddEntityFrameworkStores<NoteBookDbContext>()
              .AddDefaultTokenProviders();
 
@@ -63,6 +64,7 @@ namespace NoteBook.Service
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddScoped(typeof(INoteRepository), typeof(NoteRepository));
             services.AddTransient<INoteManager, NoteManager>();
             //  services.AddTransient<IUserService, UserService>();
         }
@@ -77,6 +79,7 @@ namespace NoteBook.Service
             }
             // ===== Use Authentication ======
             app.UseAuthentication();
+            app.UseStaticFiles();
             app.UseMvc();
 
           

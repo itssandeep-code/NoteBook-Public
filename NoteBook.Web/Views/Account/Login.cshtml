@@ -61,13 +61,15 @@
                 var dataToSend = form.serialize();
 
                 $.post(actionUrl, dataToSend).done(function (data) {
-                    console.log(data);
+                   
                     var newBody = $('.modal-body', data);
                     placeholderElement.find('.modal-body').replaceWith(newBody);
                    
-                    // find IsValid input field and check it's value
-                    // if it's valid then hide modal window
-                    alert(newBody.find('[name="IsValid"]').val());
+                    if (data.toLowerCase() == "ok") {
+                        alert("User registered successfuly.");
+                        placeholderElement.find('.modal').modal('hide');
+                        return;
+                    }
                     var isValid = newBody.find('[name="IsValid"]').val() == 'True';
                     if (isValid) {                       
                         placeholderElement.find('.modal').modal('hide');
@@ -76,9 +78,7 @@
                 });
             });
         });
-        $(window).load(function () {
-            alert('load');
-        });
+       
         
     </script>
 }

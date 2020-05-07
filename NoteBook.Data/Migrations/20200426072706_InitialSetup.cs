@@ -43,7 +43,12 @@ namespace NoteBook.Data.Migrations
                     TwoFactorEnabled = table.Column<bool>(nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false)
+                    AccessFailedCount = table.Column<int>(nullable: false),
+                    FirstName = table.Column<string>(nullable: true),
+                    LastName = table.Column<string>(nullable: true),
+                    DOB = table.Column<DateTime>(nullable: false),
+                    Address = table.Column<string>(nullable: true),
+                    ProfilePic = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -234,14 +239,14 @@ namespace NoteBook.Data.Migrations
                 columns: new[] { "Id", "CreatedBy", "CreatedOn", "ModifiedBy", "ModifiedOn", "TypeName" },
                 values: new object[,]
                 {
-                    { 1L, "1", new DateTime(2020, 4, 19, 0, 0, 0, 0, DateTimeKind.Local), null, null, "Father" },
-                    { 2L, "1", new DateTime(2020, 4, 19, 0, 0, 0, 0, DateTimeKind.Local), null, null, "Mother" },
-                    { 3L, "1", new DateTime(2020, 4, 19, 0, 0, 0, 0, DateTimeKind.Local), null, null, "Brother" },
-                    { 4L, "1", new DateTime(2020, 4, 19, 0, 0, 0, 0, DateTimeKind.Local), null, null, "Sister" },
-                    { 5L, "1", new DateTime(2020, 4, 19, 0, 0, 0, 0, DateTimeKind.Local), null, null, "Wife" },
-                    { 6L, "1", new DateTime(2020, 4, 19, 0, 0, 0, 0, DateTimeKind.Local), null, null, "Husband" },
-                    { 7L, "1", new DateTime(2020, 4, 19, 0, 0, 0, 0, DateTimeKind.Local), null, null, "Son" },
-                    { 8L, "1", new DateTime(2020, 4, 19, 0, 0, 0, 0, DateTimeKind.Local), null, null, "Daughter" }
+                    { 1L, "1", new DateTime(2020, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), null, null, "Father" },
+                    { 2L, "1", new DateTime(2020, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), null, null, "Mother" },
+                    { 3L, "1", new DateTime(2020, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), null, null, "Brother" },
+                    { 4L, "1", new DateTime(2020, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), null, null, "Sister" },
+                    { 5L, "1", new DateTime(2020, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), null, null, "Wife" },
+                    { 6L, "1", new DateTime(2020, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), null, null, "Husband" },
+                    { 7L, "1", new DateTime(2020, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), null, null, "Son" },
+                    { 8L, "1", new DateTime(2020, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), null, null, "Daughter" }
                 });
 
             migrationBuilder.CreateIndex(

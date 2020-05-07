@@ -10,7 +10,7 @@ using NoteBook.Data;
 namespace NoteBook.Data.Migrations
 {
     [DbContext(typeof(NoteBookDbContext))]
-    [Migration("20200419085401_InitialSetup")]
+    [Migration("20200426072706_InitialSetup")]
     partial class InitialSetup
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -63,57 +63,6 @@ namespace NoteBook.Data.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetRoleClaims");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("AccessFailedCount");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken();
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(256);
-
-                    b.Property<bool>("EmailConfirmed");
-
-                    b.Property<bool>("LockoutEnabled");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256);
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256);
-
-                    b.Property<string>("PasswordHash");
-
-                    b.Property<string>("PhoneNumber");
-
-                    b.Property<bool>("PhoneNumberConfirmed");
-
-                    b.Property<string>("SecurityStamp");
-
-                    b.Property<bool>("TwoFactorEnabled");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasName("EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.ToTable("AspNetUsers");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -180,6 +129,67 @@ namespace NoteBook.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("NoteBook.Data.EntityModels.ApplicationUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("AccessFailedCount");
+
+                    b.Property<string>("Address");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken();
+
+                    b.Property<DateTime>("DOB");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256);
+
+                    b.Property<bool>("EmailConfirmed");
+
+                    b.Property<string>("FirstName");
+
+                    b.Property<string>("LastName");
+
+                    b.Property<bool>("LockoutEnabled");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("PasswordHash");
+
+                    b.Property<string>("PhoneNumber");
+
+                    b.Property<bool>("PhoneNumberConfirmed");
+
+                    b.Property<string>("ProfilePic");
+
+                    b.Property<string>("SecurityStamp");
+
+                    b.Property<bool>("TwoFactorEnabled");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.ToTable("AspNetUsers");
                 });
 
             modelBuilder.Entity("NoteBook.Data.EntityModels.Contact", b =>
@@ -254,14 +264,14 @@ namespace NoteBook.Data.Migrations
                     b.ToTable("ContactTypes");
 
                     b.HasData(
-                        new { Id = 1L, CreatedBy = "1", CreatedOn = new DateTime(2020, 4, 19, 0, 0, 0, 0, DateTimeKind.Local), TypeName = "Father" },
-                        new { Id = 2L, CreatedBy = "1", CreatedOn = new DateTime(2020, 4, 19, 0, 0, 0, 0, DateTimeKind.Local), TypeName = "Mother" },
-                        new { Id = 3L, CreatedBy = "1", CreatedOn = new DateTime(2020, 4, 19, 0, 0, 0, 0, DateTimeKind.Local), TypeName = "Brother" },
-                        new { Id = 4L, CreatedBy = "1", CreatedOn = new DateTime(2020, 4, 19, 0, 0, 0, 0, DateTimeKind.Local), TypeName = "Sister" },
-                        new { Id = 5L, CreatedBy = "1", CreatedOn = new DateTime(2020, 4, 19, 0, 0, 0, 0, DateTimeKind.Local), TypeName = "Wife" },
-                        new { Id = 6L, CreatedBy = "1", CreatedOn = new DateTime(2020, 4, 19, 0, 0, 0, 0, DateTimeKind.Local), TypeName = "Husband" },
-                        new { Id = 7L, CreatedBy = "1", CreatedOn = new DateTime(2020, 4, 19, 0, 0, 0, 0, DateTimeKind.Local), TypeName = "Son" },
-                        new { Id = 8L, CreatedBy = "1", CreatedOn = new DateTime(2020, 4, 19, 0, 0, 0, 0, DateTimeKind.Local), TypeName = "Daughter" }
+                        new { Id = 1L, CreatedBy = "1", CreatedOn = new DateTime(2020, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), TypeName = "Father" },
+                        new { Id = 2L, CreatedBy = "1", CreatedOn = new DateTime(2020, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), TypeName = "Mother" },
+                        new { Id = 3L, CreatedBy = "1", CreatedOn = new DateTime(2020, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), TypeName = "Brother" },
+                        new { Id = 4L, CreatedBy = "1", CreatedOn = new DateTime(2020, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), TypeName = "Sister" },
+                        new { Id = 5L, CreatedBy = "1", CreatedOn = new DateTime(2020, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), TypeName = "Wife" },
+                        new { Id = 6L, CreatedBy = "1", CreatedOn = new DateTime(2020, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), TypeName = "Husband" },
+                        new { Id = 7L, CreatedBy = "1", CreatedOn = new DateTime(2020, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), TypeName = "Son" },
+                        new { Id = 8L, CreatedBy = "1", CreatedOn = new DateTime(2020, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), TypeName = "Daughter" }
                     );
                 });
 
@@ -302,7 +312,7 @@ namespace NoteBook.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser")
+                    b.HasOne("NoteBook.Data.EntityModels.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -310,7 +320,7 @@ namespace NoteBook.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser")
+                    b.HasOne("NoteBook.Data.EntityModels.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -323,7 +333,7 @@ namespace NoteBook.Data.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser")
+                    b.HasOne("NoteBook.Data.EntityModels.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -331,7 +341,7 @@ namespace NoteBook.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser")
+                    b.HasOne("NoteBook.Data.EntityModels.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);

@@ -1,0 +1,111 @@
+﻿@model NoteBook.Web.ViewModels.UserProfileViewModel
+@*@{
+    var photoPath = "~/userImages/" + (Model?.ProfilePic ?? "NoImage.png");
+}*@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        User Profile
+    </h1>
+</section>
+<!-- Main content -->
+<section class="content container-fluid">
+    <!-- Horizontal Form -->
+    <div class="box box-info">
+        @*<div class="box-header with-border">
+            <h3 class="box-title">User Profile</h3>
+        </div>*@
+        <!-- /.box-header -->
+        <!-- form start -->
+        <form class="form" method="post" enctype="multipart/form-data">
+            <div class="text-danger validation-summary-errors">
+                @Html.ValidationMessage("File")
+            </div>
+            <div class="box-body">
+
+                <div class="row">
+                    <div class="col-sm-3">
+                        <!--left col-->
+
+
+                        <div class="text-center">
+                            <img class="avatar img-circle img-thumbnail" alt="avatar" src="@Model.ProfilePic" asp-append-version="true" />
+                            <h6>Upload a different photo...</h6>
+                            <input asp-for="ProfileImage" type="file" class="text-center center-block file-upload" />
+                            <span asp-validation-for="ProfileImage" class="text-danger"></span>
+                            <input type="hidden" asp-for="@Model.ProfilePic" />
+                        </div><br>
+                    </div><!--/col-3-->
+                    <div class="col-sm-9">
+                        <div class="tab-content">
+
+                            <div class="form-group">
+
+                                <div class="col-xs-6">
+                                    <label asp-for="FirstName"><h4>First name</h4></label>
+                                    <input asp-for="FirstName" type="text" class="form-control" name="FirstName" placeholder="First Name" />
+                                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+
+                                <div class="col-xs-6">
+                                    <label asp-for="LastName"><h4>Last name</h4></label>
+                                    <input asp-for="LastName" type="text" class="form-control" name="LastName" placeholder="Last Name" />
+                                    <span asp-validation-for="LastName" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+
+                                <div class="col-xs-6">
+                                    <label asp-for="Email"><h4>Email</h4></label>
+                                    <input asp-for="Email" type="email" class="form-control" readonly="readonly" name="Email" placeholder="Email" />
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-xs-6">
+                                    <label asp-for="Address"><h4>Address</h4></label> <input asp-for="Address" class="form-control" name="Address" placeholder="Address" />
+                                    <span asp-validation-for="Address" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+
+                                <div class="col-xs-6">
+                                    <label asp-for="PhoneNumber"><h4>Mobile</h4></label>
+                                    <input asp-for="PhoneNumber" type="text" class="form-control" name="PhoneNumber" placeholder="PhoneNumber" />
+                                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-xs-12">
+                                    <br>                                   
+                                    <button class="btn btn-info" type="submit"><i class="glyphicon glyphicon-ok-sign"></i> Save</button>
+                                    @*<button class="btn btn-info" type="reset"><i class="glyphicon glyphicon-repeat"></i> Reset</button>*@
+                                </div>
+                            </div>
+
+                        </div><!--/tab-pane-->
+                    </div><!--/tab-content-->
+
+                </div><!--/col-9-->
+            </div><!--/row-->
+            <!-- /.box-body -->
+            <!-- /.box-footer -->
+        </form>
+    </div>
+    @section Scripts{
+        <script>
+        $(document).ready(function () {
+            $('.custom-file-input').on("change", function () {
+                var fileName = $(this).val().split("\\").pop();
+                $(this).next('.custom-file-label').html(fileName);
+            });
+        });
+        </script>
+    }
+    <!-- /.box -->
+</section>

@@ -27,8 +27,13 @@ namespace NoteBook.Web.Controllers
             apiClient = new AccountClient(new Uri(configuration["BaseApiPath"]));
 
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            if (HttpContext.Session.GetString("Access_Token") == null)
+            {
+                await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                return RedirectToAction("Login", "Account");
+            }
             return View();
         }
 

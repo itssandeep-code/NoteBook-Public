@@ -6,7 +6,7 @@ using NoteBook.Data.EntityModels;
 
 namespace NoteBook.Data
 {  
-    public class NoteBookDbContext : IdentityDbContext<IdentityUser>
+    public class NoteBookDbContext : IdentityDbContext<ApplicationUser>
     {
         public NoteBookDbContext(DbContextOptions<NoteBookDbContext> options)
             : base(options)

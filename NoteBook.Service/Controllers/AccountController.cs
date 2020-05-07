@@ -1,16 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using NoteBook.Data.EntityModels;
+using NoteBook.Models;
+using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.IO;
+using System.Linq;
+using System.Security.Claims;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace NoteBook.Service.Controllers
 {
@@ -18,13 +20,13 @@ namespace NoteBook.Service.Controllers
     [ApiController]
     public class AccountController : Controller
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IConfiguration _configuration;
 
         public AccountController(
-              UserManager<IdentityUser> userManager, 
-            SignInManager<IdentityUser> signInManager,
+              UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
             IConfiguration configuration
             )
         {
@@ -35,7 +37,7 @@ namespace NoteBook.Service.Controllers
         [AllowAnonymous]
         [HttpPost]
         [Route("Login")]
-        public async Task<IActionResult> Login([FromBody] LoginDto model)
+        public async Task<IActionResult> Login([FromBody] User model)
         {
             IActionResult response = Unauthorized();
             var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, false);
@@ -44,7 +46,9 @@ namespace NoteBook.Service.Controllers
             {
                 var appUser = _userManager.Users.SingleOrDefault(r => r.Email == model.Email);
                 var token = await GenerateJwtToken(model.Email, appUser);
-                response = Ok(new { ReturnMessage = token.ToString(), IsSuccess = true });
+                appUser.ProfilePic = string.Format("{0}://{1}/UserImages/{2}", HttpContext.Request.Scheme, HttpContext.Request.Host,
+            string.IsNullOrEmpty(appUser.ProfilePic) ? "NoImage.png" : appUser.ProfilePic);
+                response = Ok(new { ReturnMessage = token.ToString(), IsSuccess = true, Data = appUser });
 
             }
             else
@@ -54,9 +58,9 @@ namespace NoteBook.Service.Controllers
         [AllowAnonymous]
         [HttpPost]
         [Route("Register")]
-        public async Task<IActionResult> Register([FromBody] RegisterDto model)
+        public async Task<IActionResult> Register([FromBody] User model)
         {
-            var user = new IdentityUser
+            var user = new ApplicationUser
             {
                 UserName = model.Email,
                 Email = model.Email
@@ -65,14 +69,77 @@ namespace NoteBook.Service.Controllers
 
             if (result.Succeeded)
             {
-                await _signInManager.SignInAsync(user, false);
                 return Ok(new { ReturnMessage = "Register Successfully", IsSuccess = true }); ;
             }
 
-            throw new ApplicationException("UNKNOWN_ERROR");
+            return NotFound(new { ReturnMessage = result.Errors.FirstOrDefault().Description, IsSuccess = false });
         }
 
-        private async Task<object> GenerateJwtToken(string email, IdentityUser user)
+        [Authorize]
+        [HttpGet]
+        [Route("GetUserDetails")]
+        public async Task<IActionResult> GetUserDetails()
+        {
+            var userId = this.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value;
+            var result = await _userManager.FindByIdAsync(userId);
+            result.ProfilePic = string.Format("{0}://{1}/UserImages/{2}", HttpContext.Request.Scheme, HttpContext.Request.Host,
+                string.IsNullOrEmpty(result.ProfilePic) ? "NoImage.png" : result.ProfilePic);
+
+            return Ok(result);
+
+        }
+        [Authorize]
+        [HttpPost]
+        [Route("UpdateUser")]
+        public async Task<IActionResult> UpdateUser([FromBody] User model)
+        {
+            var userId = this.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value;
+            string uniqueFileName = null;
+            var userDetails = await _userManager.FindByIdAsync(userId);
+            if (!string.IsNullOrEmpty(model.ProfilePic) && !string.IsNullOrEmpty(model.FileName))
+            {
+                string picName = model.ProfilePic.Substring(model.ProfilePic.LastIndexOf('/') + 1);
+                if (picName != "NoImage.png")
+                {
+                    var existingFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\UserImages", picName);
+                    if (System.IO.File.Exists(existingFilePath))
+                    {
+                        // If file found, delete it    
+                        System.IO.File.Delete(existingFilePath);
+                    }
+                }
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + model.FileName;
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\UserImages", uniqueFileName);
+                System.IO.File.WriteAllBytes(filePath, model.File);
+            }
+            else if (!string.IsNullOrEmpty(model.FileName))
+            {
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + model.FileName;
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\UserImages", uniqueFileName);
+                System.IO.File.WriteAllBytes(filePath, model.File);
+            }
+            else
+            {
+                string picName = model.ProfilePic.Substring(model.ProfilePic.LastIndexOf('/') + 1);
+                uniqueFileName = picName;
+            }
+            userDetails.Address = model.Address;
+            userDetails.FirstName = model.FirstName;
+            userDetails.LastName = model.LastName;
+            userDetails.PhoneNumber = model.PhoneNumber;
+            userDetails.ProfilePic = uniqueFileName;
+
+            var result = await _userManager.UpdateAsync(userDetails);
+            userDetails.ProfilePic = string.Format("{0}://{1}/UserImages/{2}", HttpContext.Request.Scheme, HttpContext.Request.Host,
+              string.IsNullOrEmpty(userDetails.ProfilePic) ? "NoImage.png" : userDetails.ProfilePic);
+            if (result.Succeeded)
+                return Ok(new { ReturnMessage = "Profile updated successully.", IsSuccess = true, Data = userDetails });
+
+            return NotFound(new { ReturnMessage = result.Errors.FirstOrDefault().Description, IsSuccess = false });
+
+        }
+
+        private async Task<object> GenerateJwtToken(string email, ApplicationUser user)
         {
             var claims = new List<Claim>
             {
@@ -94,26 +161,6 @@ namespace NoteBook.Service.Controllers
             );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
-        }
-
-        public class LoginDto
-        {
-            [Required]
-            public string Email { get; set; }
-
-            [Required]
-            public string Password { get; set; }
-
-        }
-
-        public class RegisterDto
-        {
-            [Required]
-            public string Email { get; set; }
-
-            [Required]
-            [StringLength(100, ErrorMessage = "PASSWORD_MIN_LENGTH", MinimumLength = 6)]
-            public string Password { get; set; }
         }
     }
 }

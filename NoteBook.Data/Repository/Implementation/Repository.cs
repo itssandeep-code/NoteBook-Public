@@ -3,6 +3,8 @@ using NoteBook.Data.EntityModels;
 using NoteBook.Data.Repository.Contracts;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace NoteBook.Data.Repository.Implementation
@@ -18,16 +20,16 @@ namespace NoteBook.Data.Repository.Implementation
             this.context = context;
             entities = context.Set<T>();
         }
-        public async Task<IEnumerable<T>> GetAll()
+        public virtual async Task<IEnumerable<T>> GetAll()
         {
             return await entities.ToListAsync();
         }
 
-        public async Task<T> Get(long id)
+        public virtual async Task<T> Get(long id)
         {
             return await entities.SingleOrDefaultAsync(s => s.Id == id);
         }
-        public async Task Insert(T entity)
+        public virtual async Task Insert(T entity)
         {
             if (entity == null)
             {
@@ -36,20 +38,9 @@ namespace NoteBook.Data.Repository.Implementation
             await entities.AddAsync(entity);
             context.SaveChanges();
         }
+     
 
-        public async Task Update(T entity)
-        {
-            if (entity == null)
-            {
-                throw new ArgumentNullException("entity");
-            }
-            var note = this.context.Update(entity);
-            note.State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-
-            await context.SaveChangesAsync();
-        }
-
-        public async Task Delete(T entity)
+        public virtual async Task Delete(T entity)
         {
             if (entity == null)
             {
@@ -60,9 +51,39 @@ namespace NoteBook.Data.Repository.Implementation
         }
 
 
-        public void SaveChanges()
+        public virtual void SaveChanges()
         {
             context.SaveChanges();
+        }
+
+        public virtual async Task<IEnumerable<T>> GetAll(Expression<Func<T, bool>> filter)
+        {
+            IQueryable<T> query = entities;
+            return await query.Where(filter).ToListAsync();
+        }
+        public virtual IEnumerable<T> Get(Expression<Func<T, bool>> filter = null, Func<IQueryable<T>, 
+            IOrderedQueryable<T>> orderBy = null, params Expression<Func<T, object>>[] includeProperties)
+        {
+            IQueryable<T> query = entities;
+
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+
+            foreach (var includeProperty in includeProperties)
+            {
+                query = query.Include(includeProperty);
+            }
+
+            if (orderBy != null)
+            {
+                return orderBy(query).ToList();
+            }
+            else
+            {
+                return query.ToList();
+            }
         }
     }
 }

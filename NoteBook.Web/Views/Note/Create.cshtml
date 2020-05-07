@@ -1,0 +1,53 @@
+﻿@model NoteBook.Web.ViewModels.NoteViewModel
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        Notes
+    </h1>
+</section>
+<!-- Main content -->
+<section class="content container-fluid">
+    <!-- Horizontal Form -->
+    <div class="box box-info">
+        <div class="box-header with-border">
+            <h3 class="box-title">Add Note</h3>
+        </div>
+        <!-- /.box-header -->
+        <!-- form start -->
+        <form class="form-horizontal" method="post" >
+            @*<div asp-validation-summary="All" class="text-danger"></div>*@
+            <div class="box-body">
+                <div class="form-group">
+                    <label asp-for="Subject" class="col-sm-2 control-label">Subject</label>
+                    <div class="col-sm-10">
+                        <input asp-for="Subject" type="text" class="form-control" name="Subject" placeholder="Subject" />
+                        <span asp-validation-for="Subject" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Description" class="col-sm-2 control-label">Desciption</label>
+                    <div class="col-sm-10">
+                        <input asp-for="Description" type="text" class="form-control" name="Description" placeholder="Description" />
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="RemindMeOn" class="col-sm-2 control-label">Remin Me</label>
+                    <div class="col-sm-10">
+                        <input asp-for="RemindMeOn" type="date" class="form-control" name="RemindMeOn" placeholder="RemindMeOn" />
+                        <span asp-validation-for="RemindMeOn" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+                @*<button type="submit" class="btn btn-default">Cancel</button>*@
+                <a class="btn btn-default" asp-action="Index" asp-controller="Note">Cancel</a>
+                <button type="submit" class="btn btn-info pull-right">Create</button>
+            </div>
+            <!-- /.box-footer -->
+        </form>
+    </div>
+    <!-- /.box -->
+</section>

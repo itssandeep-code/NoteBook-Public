@@ -27,7 +27,7 @@ namespace NoteBook.Web.ServiceClient
         /// </summary>  
         protected async Task<T> GetAsync<T>(Uri requestUrl, string token)
         {
-           // addHeaders(token);
+            // addHeaders(token);
             _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
             var response = await _httpClient.GetAsync(requestUrl, HttpCompletionOption.ResponseHeadersRead);
             if (response.IsSuccessStatusCode)
@@ -39,14 +39,16 @@ namespace NoteBook.Web.ServiceClient
         /// <summary>  
         /// Common method for making POST calls  
         /// </summary>  
-        protected async Task<Message<T>> PostAsync<T>(Uri requestUrl, T content)
+        protected async Task<Message<T>> PostAsync<T>(Uri requestUrl, T content, string token="")
         {
             // addHeaders();
+            if (!string.IsNullOrEmpty(token))
+                _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
             var response = await _httpClient.PostAsync(requestUrl.ToString(), CreateHttpContent<T>(content));
             if (response.IsSuccessStatusCode)
                 response.EnsureSuccessStatusCode();
             var data = await response.Content.ReadAsStringAsync();
-           
+
             return JsonConvert.DeserializeObject<Message<T>>(data);
         }
         protected async Task<Message<T1>> PostAsync<T1, T2>(Uri requestUrl, T2 content)

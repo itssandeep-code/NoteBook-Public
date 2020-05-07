@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NoteBook.Business.NoteManager;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace NoteBook.Service.Controllers
@@ -22,9 +24,11 @@ namespace NoteBook.Service.Controllers
         [Authorize]
         public async Task<ActionResult<IEnumerable<Models.Note>>> GetNotes()
         {
-            var result = await noteManager.GetNotes();
+            IEnumerable<Models.Note> response = new List<Models.Note>();
+            var UserId = this.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value;            
+            var result = await noteManager.GetNotes(UserId);
             if (!result.Any())
-                return NotFound(new { ReturnMessage = "No record exists.", IsSuccess = false });
+                return NotFound(response);
 
             return Ok(result);
         }
@@ -41,19 +45,25 @@ namespace NoteBook.Service.Controllers
         [Route("SaveNote")]
         public async Task<ActionResult<Models.Note>> SaveNote([FromBody] Models.Note note)
         {
-
+            var UserId = this.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value;
             if (note.Id > 0)
+            {                
                 await noteManager.UpdateNote(note);
+            }
             else
+            {
+                note.IsActive = true;
+                note.CreatedBy = UserId;
+                note.CreatedOn = DateTime.Today;
                 await noteManager.AddNote(note);
-
+            }
             return Ok(note);
         }
         [HttpPost]
-        [Route("RemoveNote")]
-        public async Task<ActionResult<Models.Note>> RemoveNote(int Id)
+        [Route("DeleteNote")]
+        public async Task<ActionResult<Models.Note>> DeleteNote([FromBody] Models.Note note)
         {
-            var Note = await noteManager.DeleteNote(Id);
+            var Note = await noteManager.DeleteNote(Convert.ToInt32(note.Id));
             return Ok(Note);
         }
 

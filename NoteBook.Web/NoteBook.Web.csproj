@@ -13,8 +13,4 @@
     <ProjectReference Include="..\NoteBook.Model\NoteBook.Models.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Views\Account\" />
-  </ItemGroup>
-
 </Project>
