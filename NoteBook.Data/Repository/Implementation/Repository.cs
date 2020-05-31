@@ -36,7 +36,15 @@ namespace NoteBook.Data.Repository.Implementation
                 throw new ArgumentNullException("entity");
             }
             await entities.AddAsync(entity);
-            context.SaveChanges();
+            try
+            {
+                context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
         }
      
 

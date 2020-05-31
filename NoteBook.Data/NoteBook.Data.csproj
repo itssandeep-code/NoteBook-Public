@@ -12,6 +12,9 @@
     <Compile Remove="Migrations\20200405102319_ChangeColumnNameInNote.cs" />
     <Compile Remove="Migrations\20200419054858_IdentityAdded.cs" />
     <Compile Remove="Migrations\20200419084759_InitialSetup.cs" />
+    <Compile Remove="Migrations\20200426072706_InitialSetup.cs" />
+    <Compile Remove="Migrations\20200516063547_InitialSetup.cs" />
+    <Compile Remove="Migrations\20200516063717_InitialSetup.cs" />
   </ItemGroup>
 
   <ItemGroup>

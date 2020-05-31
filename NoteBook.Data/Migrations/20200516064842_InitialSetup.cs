@@ -61,11 +61,12 @@ namespace NoteBook.Data.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    TypeName = table.Column<string>(nullable: false),
                     CreatedBy = table.Column<string>(nullable: true),
                     CreatedOn = table.Column<DateTime>(nullable: false),
                     ModifiedBy = table.Column<string>(nullable: true),
-                    ModifiedOn = table.Column<DateTime>(nullable: true),
-                    TypeName = table.Column<string>(nullable: false)
+                    ModifiedOn = table.Column<DateTime>(nullable: true)
+                  
                 },
                 constraints: table =>
                 {
@@ -79,14 +80,15 @@ namespace NoteBook.Data.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    CreatedBy = table.Column<string>(nullable: true),
-                    CreatedOn = table.Column<DateTime>(nullable: false),
-                    ModifiedBy = table.Column<string>(nullable: true),
-                    ModifiedOn = table.Column<DateTime>(nullable: true),
                     Subject = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
                     RemindMeOn = table.Column<DateTime>(nullable: false),
-                    IsActive = table.Column<bool>(nullable: false)
+                    IsActive = table.Column<bool>(nullable: false),
+                    CreatedBy = table.Column<string>(nullable: true),
+                    CreatedOn = table.Column<DateTime>(nullable: false),
+                    ModifiedBy = table.Column<string>(nullable: true),
+                    ModifiedOn = table.Column<DateTime>(nullable: true)
+                  
                 },
                 constraints: table =>
                 {
@@ -205,10 +207,8 @@ namespace NoteBook.Data.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    CreatedBy = table.Column<string>(nullable: true),
-                    CreatedOn = table.Column<DateTime>(nullable: false),
-                    ModifiedBy = table.Column<string>(nullable: true),
-                    ModifiedOn = table.Column<DateTime>(nullable: true),
+                   
+                    Title = table.Column<int>(nullable: false),
                     FirstName = table.Column<string>(nullable: false),
                     LastName = table.Column<string>(nullable: false),
                     Email = table.Column<string>(nullable: true),
@@ -221,7 +221,11 @@ namespace NoteBook.Data.Migrations
                     ContactWith = table.Column<long>(nullable: true),
                     ContactTypeId = table.Column<long>(nullable: false),
                     DateOfBirth = table.Column<DateTime>(nullable: false),
-                    DateOfMarriage = table.Column<DateTime>(nullable: false)
+                    DateOfMarriage = table.Column<DateTime>(nullable: false),
+                    CreatedBy = table.Column<string>(nullable: true),
+                    CreatedOn = table.Column<DateTime>(nullable: false),
+                    ModifiedBy = table.Column<string>(nullable: true),
+                    ModifiedOn = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -239,14 +243,14 @@ namespace NoteBook.Data.Migrations
                 columns: new[] { "Id", "CreatedBy", "CreatedOn", "ModifiedBy", "ModifiedOn", "TypeName" },
                 values: new object[,]
                 {
-                    { 1L, "1", new DateTime(2020, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), null, null, "Father" },
-                    { 2L, "1", new DateTime(2020, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), null, null, "Mother" },
-                    { 3L, "1", new DateTime(2020, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), null, null, "Brother" },
-                    { 4L, "1", new DateTime(2020, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), null, null, "Sister" },
-                    { 5L, "1", new DateTime(2020, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), null, null, "Wife" },
-                    { 6L, "1", new DateTime(2020, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), null, null, "Husband" },
-                    { 7L, "1", new DateTime(2020, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), null, null, "Son" },
-                    { 8L, "1", new DateTime(2020, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), null, null, "Daughter" }
+                    { 1L, "1", new DateTime(2020, 5, 16, 0, 0, 0, 0, DateTimeKind.Local), null, null, "Father" },
+                    { 2L, "1", new DateTime(2020, 5, 16, 0, 0, 0, 0, DateTimeKind.Local), null, null, "Mother" },
+                    { 3L, "1", new DateTime(2020, 5, 16, 0, 0, 0, 0, DateTimeKind.Local), null, null, "Brother" },
+                    { 4L, "1", new DateTime(2020, 5, 16, 0, 0, 0, 0, DateTimeKind.Local), null, null, "Sister" },
+                    { 5L, "1", new DateTime(2020, 5, 16, 0, 0, 0, 0, DateTimeKind.Local), null, null, "Wife" },
+                    { 6L, "1", new DateTime(2020, 5, 16, 0, 0, 0, 0, DateTimeKind.Local), null, null, "Husband" },
+                    { 7L, "1", new DateTime(2020, 5, 16, 0, 0, 0, 0, DateTimeKind.Local), null, null, "Son" },
+                    { 8L, "1", new DateTime(2020, 5, 16, 0, 0, 0, 0, DateTimeKind.Local), null, null, "Daughter" }
                 });
 
             migrationBuilder.CreateIndex(

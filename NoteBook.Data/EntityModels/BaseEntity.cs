@@ -9,13 +9,13 @@ namespace NoteBook.Data.EntityModels
     {
         [Column(Order = 0)]
         public Int64 Id { get; set; }
-        [Column(Order = 1)]
+        [Column(Order = 100)]
         public string CreatedBy { get; set; }
-        [Column(Order = 2)]
+        [Column(Order = 101)]
         public DateTime CreatedOn { get; set; }
-        [Column(Order = 3)]
+        [Column(Order = 102)]
         public string ModifiedBy { get; set; }
-        [Column(Order =4)]
+        [Column(Order =103)]
         public DateTime? ModifiedOn { get; set; }
     }
 }

@@ -38,56 +38,118 @@
                     </div><!--/col-3-->
                     <div class="col-sm-9">
                         <div class="tab-content">
-                             
-                                    <div class="form-group">
+                            <div class="form-group">
 
-                                        <div class="col-xs-6">
-                                            <label asp-for="FirstName"><h4>First name</h4></label>
-                                            <input asp-for="FirstName" type="text" class="form-control" name="FirstName" placeholder="First Name" />
-                                            <span asp-validation-for="FirstName" class="text-danger"></span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
+                                <div class="col-xs-6">
+                                    <label asp-for="Title"><h4>Title</h4></label>
+                                    <select asp-for="Title"
+                                            class="form-control"
+                                            asp-items="@(new SelectList(@ViewBag.ListOfTitle,"Value", "Text"))"></select>
+                                    <span asp-validation-for="Title" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
 
-                                        <div class="col-xs-6">
-                                            <label asp-for="LastName"><h4>Last name</h4></label>
-                                            <input asp-for="LastName" type="text" class="form-control" name="LastName" placeholder="Last Name" />
-                                            <span asp-validation-for="LastName" class="text-danger"></span>
-                                        </div>
-                                    </div>
+                                <div class="col-xs-6">
+                                    <label asp-for="FirstName"><h4>First name</h4></label>
+                                    <input asp-for="FirstName" type="text" class="form-control" name="FirstName" placeholder="First Name" />
+                                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
 
-                                    <div class="form-group">
+                                <div class="col-xs-6">
+                                    <label asp-for="LastName"><h4>Last name</h4></label>
+                                    <input asp-for="LastName" type="text" class="form-control" name="LastName" placeholder="Last Name" />
+                                    <span asp-validation-for="LastName" class="text-danger"></span>
+                                </div>
+                            </div>
 
-                                        <div class="col-xs-6">
-                                            <label asp-for="Email"><h4>Email</h4></label>
-                                            <input asp-for="Email" type="email" class="form-control" name="Email" placeholder="Email" />
-                                            <span asp-validation-for="Email" class="text-danger"></span>
-                                        </div>
-                                    </div>
+                            <div class="form-group">
 
-                                    <div class="form-group">
-                                        <div class="col-xs-6">
-                                            <label asp-for="Address"><h4>Address</h4></label> <input asp-for="Address" class="form-control" name="Address" placeholder="Address" />
-                                            <span asp-validation-for="Address" class="text-danger"></span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
+                                <div class="col-xs-6">
+                                    <label asp-for="Email"><h4>Email</h4></label>
+                                    <input asp-for="Email" type="email" class="form-control" name="Email" placeholder="Email" />
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+                            </div>
 
-                                        <div class="col-xs-6">
-                                            <label asp-for="Mobile"><h4>Mobile</h4></label>
-                                            <input asp-for="Mobile" type="text" class="form-control" name="Mobile" placeholder="Mobile" />
-                                            <span asp-validation-for="Mobile" class="text-danger"></span>
-                                        </div>
-                                    </div>
+                            <div class="form-group">
+                                <div class="col-xs-6">
+                                    <label asp-for="Address"><h4>Address</h4></label> <input asp-for="Address" class="form-control" name="Address" placeholder="Address" />
+                                    <span asp-validation-for="Address" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-xs-6">
+                                    <label asp-for="AlternateAddress"><h4>Alternate Address</h4></label> <input asp-for="AlternateAddress" class="form-control" name="AlternateAddress"
+                                                                                                                placeholder="AlternateAddress" />
+                                </div>
+                            </div>
+                            <div class="form-group">
 
-                                    <div class="form-group">
-                                        <div class="col-xs-12">
-                                            <br>
-                                            <a asp-action="Index" class="btn btn-info">Back to List</a>
-                                            <button class="btn btn-info" type="submit"><i class="glyphicon glyphicon-ok-sign"></i> Save</button>
-                                            @*<button class="btn btn-info" type="reset"><i class="glyphicon glyphicon-repeat"></i> Reset</button>*@
-                                        </div>
-                                    </div>
+                                <div class="col-xs-6">
+                                    <label asp-for="Mobile"><h4>Mobile</h4></label>
+                                    <input asp-for="Mobile" type="text" class="form-control" name="Mobile" placeholder="Mobile" />
+                                    <span asp-validation-for="Mobile" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+
+                                <div class="col-xs-6">
+                                    <label asp-for="AlternateMobile"><h4>Alternate Mobile</h4></label>
+                                    <input asp-for="AlternateMobile" type="text" class="form-control" name="AlternateMobile" placeholder="AlternateMobile" />
+                                    <span asp-validation-for="AlternateMobile" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+
+                                <div class="col-xs-6">
+                                    <label asp-for="DateOfBirth"><h4>Date Of Birth</h4></label>
+                                    <input asp-for="DateOfBirth" type="date" class="form-control" name="DateOfBirth"
+                                           placeholder="DateOfBirth" />
+                                    <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+
+                                <div class="col-xs-6">
+                                    <label asp-for="DateOfMarriage"><h4>Date Of Marriage</h4></label>
+                                    <input asp-for="DateOfMarriage" type="date" class="form-control" name="DateOfMarriage"
+                                           placeholder="DateOfMarriage" />
+                                    <span asp-validation-for="DateOfMarriage" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+
+                                <div class="col-xs-6">                                    
+                                    <label asp-for="ContactTypeId"><h4>Contact Type</h4></label>
+                                    <select asp-for="ContactTypeId"
+                                            class="form-control"
+                                            asp-items="@(new SelectList(@ViewBag.ContactTypes,"Value", "Text"))"></select>
+                                    <span asp-validation-for="ContactTypeId" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+
+                                <div class="col-xs-6">
+                                    
+                                    <label asp-for="ContactWith"><h4>Contact With</h4></label>
+                                    <select asp-for="ContactWith"
+                                            class="form-control"
+                                            asp-items="@(new SelectList(@ViewBag.Contacts,"Value", "Text"))"></select>
+                                    <span asp-validation-for="ContactWith" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-xs-12">
+                                    <br>
+                                    <a asp-action="Index" class="btn btn-info">Back to List</a>
+                                    <button class="btn btn-info" type="submit"><i class="glyphicon glyphicon-ok-sign"></i> Save</button>
+                                    @*<button class="btn btn-info" type="reset"><i class="glyphicon glyphicon-repeat"></i> Reset</button>*@
+                                </div>
+                            </div>
 
                         </div><!--/tab-pane-->
                     </div><!--/tab-content-->
@@ -95,19 +157,18 @@
                 </div><!--/col-9-->
             </div><!--/row-->
             <!-- /.box-body -->
-           
             <!-- /.box-footer -->
         </form>
     </div>
     @section Scripts{
-    <script>
-        $(document).ready(function () {
-            $('.custom-file-input').on("change", function () {
-                var fileName = $(this).val().split("\\").pop();
-                $(this).next('.custom-file-label').html(fileName);
+        <script>
+            $(document).ready(function () {
+                $('.custom-file-input').on("change", function () {
+                    var fileName = $(this).val().split("\\").pop();
+                    $(this).next('.custom-file-label').html(fileName);
+                });
             });
-        });
-    </script>
+        </script>
     }
     <!-- /.box -->
 </section>

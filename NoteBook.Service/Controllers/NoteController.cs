@@ -54,10 +54,11 @@ namespace NoteBook.Service.Controllers
             {
                 note.IsActive = true;
                 note.CreatedBy = UserId;
-                note.CreatedOn = DateTime.Today;
+                note.CreatedOn = DateTime.Now;
                 await noteManager.AddNote(note);
             }
-            return Ok(note);
+            return Ok(new { ReturnMessage = "Note saved successfully", IsSuccess = true, Data = note });
+            
         }
         [HttpPost]
         [Route("DeleteNote")]

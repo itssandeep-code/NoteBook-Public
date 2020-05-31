@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using NoteBook.Data.EntityModels;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace NoteBook.Data
 {  
@@ -21,5 +23,6 @@ namespace NoteBook.Data
             base.OnModelCreating(modelBuilder);
             modelBuilder.Seed();
         }
+       
     }
 }

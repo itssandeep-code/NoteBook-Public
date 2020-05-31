@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using NoteBook.Business.ContactManager;
 using NoteBook.Business.NoteManager;
 using NoteBook.Data;
 using NoteBook.Data.EntityModels;
@@ -65,7 +66,10 @@ namespace NoteBook.Service
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped(typeof(INoteRepository), typeof(NoteRepository));
+            services.AddScoped(typeof(IContactRepository), typeof(ContactRepository));
             services.AddTransient<INoteManager, NoteManager>();
+            services.AddTransient<IContactManager, ContactManager>();
+
             //  services.AddTransient<IUserService, UserService>();
         }
 

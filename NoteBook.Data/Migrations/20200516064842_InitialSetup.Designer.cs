@@ -10,7 +10,7 @@ using NoteBook.Data;
 namespace NoteBook.Data.Migrations
 {
     [DbContext(typeof(NoteBookDbContext))]
-    [Migration("20200426072706_InitialSetup")]
+    [Migration("20200516064842_InitialSetup")]
     partial class InitialSetup
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -233,6 +233,8 @@ namespace NoteBook.Data.Migrations
 
                     b.Property<string>("PhotoPath");
 
+                    b.Property<int>("Title");
+
                     b.Property<string>("UserId");
 
                     b.HasKey("Id");
@@ -264,14 +266,14 @@ namespace NoteBook.Data.Migrations
                     b.ToTable("ContactTypes");
 
                     b.HasData(
-                        new { Id = 1L, CreatedBy = "1", CreatedOn = new DateTime(2020, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), TypeName = "Father" },
-                        new { Id = 2L, CreatedBy = "1", CreatedOn = new DateTime(2020, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), TypeName = "Mother" },
-                        new { Id = 3L, CreatedBy = "1", CreatedOn = new DateTime(2020, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), TypeName = "Brother" },
-                        new { Id = 4L, CreatedBy = "1", CreatedOn = new DateTime(2020, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), TypeName = "Sister" },
-                        new { Id = 5L, CreatedBy = "1", CreatedOn = new DateTime(2020, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), TypeName = "Wife" },
-                        new { Id = 6L, CreatedBy = "1", CreatedOn = new DateTime(2020, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), TypeName = "Husband" },
-                        new { Id = 7L, CreatedBy = "1", CreatedOn = new DateTime(2020, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), TypeName = "Son" },
-                        new { Id = 8L, CreatedBy = "1", CreatedOn = new DateTime(2020, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), TypeName = "Daughter" }
+                        new { Id = 1L, CreatedBy = "1", CreatedOn = new DateTime(2020, 5, 16, 0, 0, 0, 0, DateTimeKind.Local), TypeName = "Father" },
+                        new { Id = 2L, CreatedBy = "1", CreatedOn = new DateTime(2020, 5, 16, 0, 0, 0, 0, DateTimeKind.Local), TypeName = "Mother" },
+                        new { Id = 3L, CreatedBy = "1", CreatedOn = new DateTime(2020, 5, 16, 0, 0, 0, 0, DateTimeKind.Local), TypeName = "Brother" },
+                        new { Id = 4L, CreatedBy = "1", CreatedOn = new DateTime(2020, 5, 16, 0, 0, 0, 0, DateTimeKind.Local), TypeName = "Sister" },
+                        new { Id = 5L, CreatedBy = "1", CreatedOn = new DateTime(2020, 5, 16, 0, 0, 0, 0, DateTimeKind.Local), TypeName = "Wife" },
+                        new { Id = 6L, CreatedBy = "1", CreatedOn = new DateTime(2020, 5, 16, 0, 0, 0, 0, DateTimeKind.Local), TypeName = "Husband" },
+                        new { Id = 7L, CreatedBy = "1", CreatedOn = new DateTime(2020, 5, 16, 0, 0, 0, 0, DateTimeKind.Local), TypeName = "Son" },
+                        new { Id = 8L, CreatedBy = "1", CreatedOn = new DateTime(2020, 5, 16, 0, 0, 0, 0, DateTimeKind.Local), TypeName = "Daughter" }
                     );
                 });
 
